@@ -75,20 +75,31 @@ class Books extends Component {
                 </form>
               </Col>
             </Row>
-            {this.state.books.length ? (
+            {this.state.books !== undefined ? (
               <List>
                 {this.state.books.map(book => (
                   <ListItem key={book.id}
                   >
-                    <img alt={book.volumeInfo.title} src={book.volumeInfo.imageLinks.smallThumbnail}></img>
+                    {book.volumeInfo.imageLinks !== undefined ? (
+                      <img alt={book.volumeInfo.title} src={book.volumeInfo.imageLinks.smallThumbnail}></img>
+
+                    ) : (
+                        <p>No Image Available</p>
+                      )
+                    }
                     <a href={book.saleInfo.buyLink}
                       target="_blank" rel="noopener noreferrer">
                       <strong>
-                        {book.volumeInfo.title} by {
-                          book.volumeInfo.authors.length === 0 ? 
-                          (book.volumeInfo.authors.map(authors => authors)) 
-                          :
-                          ([...book.volumeInfo.authors].map((author, count) => count < book.volumeInfo.authors.length - 1 ? [author, " & "] : [author]).reduce((author1, author2) => author1.concat(author2)))}
+                        "{book.volumeInfo.title}" by: {book.volumeInfo.authors !== undefined ?
+                          (
+                            book.volumeInfo.authors.length === 0 ?
+                              (book.volumeInfo.authors.map(authors => authors))
+                              :
+                              ([...book.volumeInfo.authors].map((author, count) => count < book.volumeInfo.authors.length - 1 ? [author, " & "] : [author]).reduce((author1, author2) => author1.concat(author2)))
+                          ) : (
+                            <p>No Authors</p>
+                          )
+                        }
                       </strong>
                     </a>
                     <DeleteBtn onClick={() => this.deleteBook(book._id)} />
@@ -103,7 +114,7 @@ class Books extends Component {
 
             <h1>Books On My List</h1>
 
-            {this.state.books.length ? (
+            {this.state.savedbooks !== undefined ? (
               <List>
                 {this.state.savedBooks.map(book => (
                   <ListItem key={book._id}>
